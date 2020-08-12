@@ -2,10 +2,19 @@
 Input: a List of integers
 Returns: a List of integers
 '''
-def product_of_all_other_numbers(arr):
-    # Your code here
 
-    pass
+
+def product_of_all_other_numbers(arr):
+    total = 1
+    for n in arr:
+        total *= n
+    for i, n in enumerate(arr):
+        arr[i] = int(total / n)
+
+    return arr
+
+
+# How do you do this in O(n) time and O(n) space without using division?
 
 
 if __name__ == '__main__':
