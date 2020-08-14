@@ -6,7 +6,7 @@ Returns: a List of integers
 '''
 
 
-# Is this not O(n) time? O(k*(n-k))
+# Is this not O(n) time? O(k*(n-k)). Is this ~O(n^2)?
 # Took 80 seconds to run the large test file. So...no
 #  def sliding_window_max(nums, k):
 #      maxes = []
@@ -14,37 +14,35 @@ Returns: a List of integers
 #          maxes.append(max(nums[i:i+k]))
 #      return maxes
 
-# So this one took 3.6 seconds. So big improvement, but still not there...
+# This one took 3.6 seconds. So big improvement, but still not there...
 # This has to be O(n). Hard to tell though, maybe depends on distribution
 # of values and how many rescans have to happen? Worst case it's just the
 # previous algorithm
 def sliding_window_max(nums, k):
     maxes = []
-    current_max = {
-        'index': -1,
-        'value': None
-    }
+    current_max_index = -1
+    current_max_value = None
 
     for i in range(len(nums)-k+1):
         right_index = i+k-1
 
         # The max has just fallen out
-        if current_max['index'] < i:
+        if current_max_index < i:
             # rescan the whole window
-            current_max['value'] = -math.inf
-            for j, num in enumerate(nums[i:i+k]):
-                if num > current_max['value']:
-                    current_max['index'] = i+j
-                    current_max['value'] = num
+            current_max_value = -math.inf
+            for j in range(i, i+k):
+                if nums[j] > current_max_value:
+                    current_max_index = j
+                    current_max_value = nums[j]
                 else:
                     pass
         # new value > current max
-        elif nums[right_index] > current_max['value']:
-            current_max['index'] = right_index
-            current_max['value'] = nums[right_index]
+        elif nums[right_index] > current_max_value:
+            current_max_index = right_index
+            current_max_value = nums[right_index]
         else:
             pass
-        maxes.append(current_max['value'])
+        maxes.append(current_max_value)
 
     return maxes
 
